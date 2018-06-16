@@ -1,5 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import Home from './Home';
+import Play from './Play';
+import History from './History';
+import Setup from './Setup';
 
 const App = () => (
   <Router>
@@ -10,40 +14,6 @@ const App = () => (
       <Route path="/setup" component={Setup} />
     </div>
   </Router>
-);
-
-const Home = () => (
-  <div>
-    <ul>
-      <li>
-        <Link to="/play">Home</Link>
-      </li>
-      <li>
-        <Link to="/history">History</Link>
-      </li>
-      <li>
-        <Link to="/setup">Setup</Link>
-      </li>
-    </ul>
-  </div>
-);
-
-const Play = () => (
-  <div>
-    <h2>Play</h2>
-  </div>
-);
-
-const History = () => (
-  <div>
-    <h2>History</h2>
-  </div>
-);
-
-const Setup = () => (
-  <div>
-    <h2>Setup</h2>
-  </div>
 );
 
 export default App;
