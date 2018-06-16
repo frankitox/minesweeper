@@ -1,15 +1,15 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import React from 'react';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 const App = () => (
-    <Router>
-      <div>
-        <Route exact path="/" component={Home} />
-        <Route path="/play" component={Play} />
-        <Route path="/history" component={History} />
-        <Route path="/setup" component={Setup} />
-      </div>
-    </Router>
+  <Router>
+    <div>
+      <Route exact path="/" component={Home} />
+      <Route path="/play" component={Play} />
+      <Route path="/history" component={History} />
+      <Route path="/setup" component={Setup} />
+    </div>
+  </Router>
 );
 
 const Home = () => (
