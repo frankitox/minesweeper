@@ -1,6 +1,7 @@
 import _, {
   range,
   map,
+  orderBy,
   keys,
   intersection,
   isEmpty,
@@ -13,7 +14,11 @@ import _, {
 import 'lodash.product';
 import { START_GAME, FLAG_SQUARE, TAP_SQUARE, TICK } from './actionTypes';
 import { getSetup } from './../setup';
+import { difficultyWeight } from './../setup/difficulties';
 import { WON, LOST, PLAYING } from './statuses';
+import moment from 'moment';
+
+window.moment = moment;
 
 const initialState = {
   mines: {},
@@ -38,6 +43,22 @@ const getSquare = ({ mines, flags, uncovered }, row, col) => {
 const nextPlayer = (currentPlayer, players) => (currentPlayer + 1) % players;
 
 export const boardKey = 'board';
+
+export const getHistory = state => ({
+  gamesPlayed: orderBy(
+    map(state[boardKey].history, item => ({
+      startedAt: moment(item.startedAt).format('MM-DD-YYYY hh:mma'),
+      endAt: moment(item.endAt).format('MM-DD-YYYY hh:mma'),
+      difficulty: item.difficulty.toLowerCase(),
+      difficultyIndex: difficultyWeight(item.difficulty),
+      totalTimeSpent: `${item.duration / 1000} seconds`,
+      status: `Player ${item.lastPlayer} ${item.status}`,
+      duration: item.duration
+    })),
+    ['difficultyIndex', 'duration'],
+    ['desc', 'asc']
+  )
+});
 
 const getNeighbors = ({ width, height }, row, col) => {
   const ops = [x => x, x => x - 1, x => x + 1];
