@@ -8,14 +8,14 @@ import {
 } from './actionTypes';
 
 const mapDifficultyToProps = {
-  [EASY]: { height: 10, width: 10, mines: 10 },
-  [MEDIUM]: { height: 10, width: 10, mines: 20 },
+  [EASY]: { height: 10, width: 10, mines: 1 },
+  [MEDIUM]: { height: 10, width: 10, mines: 10 },
   [HARD]: { height: 10, width: 20, mines: 80 }
 };
 
 const initialState = {
   ...mapDifficultyToProps[MEDIUM],
-  players: 1
+  players: 2
 };
 
 const propsToDifficulty = props => {
