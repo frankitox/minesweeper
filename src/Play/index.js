@@ -17,8 +17,8 @@ class Play extends React.Component {
   constructor(props) {
     super(props);
     const { startGame, setup } = props;
-    const { width, height } = setup;
-    startGame({ width, height });
+    const { width, height, mines } = setup;
+    startGame({ width, height, mines });
   }
 
   render() {
