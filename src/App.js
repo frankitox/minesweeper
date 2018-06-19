@@ -9,6 +9,7 @@ import Home from './Home';
 import Play from './Play';
 import History from './History';
 import Setup from './Setup';
+import './App.css';
 
 class App extends React.Component {
   constructor(props) {
@@ -24,7 +25,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="App">
         <Route exact path="/" component={Home} />
         <Route path="/play" component={Play} />
         <Route path="/history" component={History} />
