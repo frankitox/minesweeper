@@ -1,8 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import * as boardActions from './modules/board/actions';
-import * as setupActions from './modules/setup/actions';
+import { identity } from 'lodash';
+import { loadBoard } from './modules/board/actions';
+import { loadSetup } from './modules/setup/actions';
 import Home from './Home';
 import Play from './Play';
 import History from './History';
@@ -12,13 +14,11 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     const { loadSetup, loadBoard } = props;
-    const { setup: storedSetup, board: storedBoard } =
+    const { setup, board } =
       JSON.parse(localStorage.getItem('minesweeper')) || {};
-    if (storedSetup) {
-      loadSetup(storedSetup);
-    }
-    if (storedBoard) {
-      loadBoard(storedBoard);
+    if (setup && board) {
+      loadSetup(setup);
+      loadBoard(board);
     }
   }
 
@@ -34,9 +34,12 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = state => state;
+App.propTypes = {
+  loadSetup: PropTypes.func.isRequired,
+  loadBoard: PropTypes.func.isRequired
+};
 
 export default connect(
-  mapStateToProps,
-  { ...setupActions, ...boardActions }
+  identity,
+  { loadBoard, loadSetup }
 )(App);

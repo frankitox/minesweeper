@@ -46,7 +46,8 @@ const getSquare = ({ mines, flags, uncovered }, row, col) => {
   return { mine, flagged, uncover };
 };
 
-const nextPlayer = (currentPlayer, players) => (currentPlayer + 1) % players;
+const nextPlayer = (currentPlayer, players) =>
+  (Number(currentPlayer) + 1) % players;
 
 export const boardKey = 'board';
 
@@ -116,10 +117,12 @@ const clearZeroes = ({ width, height, mines, uncovered }, toUncover) => {
 export const getBoard = state => {
   const { width, height } = getSetup(state);
   const boardState = state[boardKey];
-  const board = map(range(height), row =>
+  const squares = map(range(height), row =>
     map(range(width), col => {
       const { mine, flagged, uncover } = getSquare(boardState, row, col);
-      const nMines = minesAround(boardState, { width, height }, row, col);
+      const nMines = String(
+        minesAround(boardState, { width, height }, row, col)
+      );
       return {
         mine,
         flagged,
@@ -128,13 +131,13 @@ export const getBoard = state => {
       };
     })
   );
-  const { mines, flags, duration } = boardState;
+  const { mines, flags, duration, currentPlayer } = boardState;
   return {
-    ...boardState,
-    board,
+    currentPlayer: String(currentPlayer + 1),
+    squares,
     duration,
     status: getGameStatus(boardState, { width, height }),
-    minesLeft: size(mines) - size(flags)
+    minesLeft: String(size(mines) - size(flags))
   };
 };
 

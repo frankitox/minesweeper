@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Button from './../Button';
 import { getSetup } from './../modules/setup';
@@ -76,6 +77,23 @@ const Setup = ({
     <Button to="/play">Play</Button>
   </div>
 );
+
+export const inputProps = {
+  mines: PropTypes.string.isRequired,
+  height: PropTypes.string.isRequired,
+  width: PropTypes.string.isRequired,
+  players: PropTypes.string.isRequired,
+  difficulty: PropTypes.oneOf([EASY, MEDIUM, HARD])
+};
+
+Setup.propTypes = {
+  ...inputProps,
+  setMines: PropTypes.func.isRequired,
+  setWidth: PropTypes.func.isRequired,
+  setHeight: PropTypes.func.isRequired,
+  setPlayers: PropTypes.func.isRequired,
+  setDifficulty: PropTypes.func.isRequired
+};
 
 export default connect(
   getSetup,

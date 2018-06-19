@@ -1,5 +1,5 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { map } from 'lodash';
 import Button from './../Button';
@@ -33,5 +33,17 @@ const History = ({ gamesPlayed }) => (
     <Button to="/play">Play</Button>
   </div>
 );
+
+History.propTypes = {
+  gamesPlayed: PropTypes.arrayOf(
+    PropTypes.shape({
+      startedAt: PropTypes.string.isRequired,
+      endAt: PropTypes.string.isRequired,
+      difficulty: PropTypes.string,
+      totalTimeSpent: PropTypes.string.isRequired,
+      status: PropTypes.string.isRequired
+    })
+  )
+};
 
 export default connect(getHistory)(History);

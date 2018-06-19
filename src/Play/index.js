@@ -1,11 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { pick } from 'lodash';
+import { inputProps } from './../Setup';
 import Counter from './../Counter';
 import Button from './../Button';
 import { getSetup } from './../modules/setup';
 import { getBoard } from './../modules/board';
 import * as boardActions from './../modules/board/actions';
-import { PLAYING } from './../modules/board/statuses';
+import { LOST, PLAYING, WON } from './../modules/board/statuses';
 
 // TODO: https://stackoverflow.com/questions/28648292/right-click-menu-using-react-js
 // right click hide menu
@@ -14,13 +17,14 @@ class Play extends React.Component {
   constructor(props) {
     super(props);
     const { startGame, setup } = props;
-    startGame(setup);
+    const { width, height } = setup;
+    startGame({ width, height });
   }
 
   render() {
     const {
       setup,
-      board,
+      squares,
       flagSquare,
       tick,
       currentPlayer,
@@ -32,7 +36,7 @@ class Play extends React.Component {
     return (
       <div>
         <h1>
-          Player {currentPlayer + 1} {status}
+          Player {currentPlayer} {status}
         </h1>
         {status === PLAYING ? (
           <Counter time={duration} everySecond={tick} />
@@ -41,7 +45,7 @@ class Play extends React.Component {
         )}
         <Button to="/">Back</Button>
         <h1>{minesLeft} mines</h1>
-        {board.map((row, rowI) => (
+        {squares.map((row, rowI) => (
           <div key={rowI}>
             {row.map((square, squareI) => (
               <span
@@ -80,17 +84,34 @@ class Play extends React.Component {
   }
 }
 
+Play.propTypes = {
+  setup: PropTypes.shape(
+    pick(inputProps, ['players', 'height', 'width', 'difficulty'])
+  ).isRequired,
+  status: PropTypes.oneOf([LOST, PLAYING, WON]).isRequired,
+  currentPlayer: PropTypes.string.isRequired,
+  duration: PropTypes.number.isRequired,
+  minesLeft: PropTypes.string.isRequired,
+  startGame: PropTypes.func.isRequired,
+  flagSquare: PropTypes.func.isRequired,
+  tapSquare: PropTypes.func.isRequired,
+  tick: PropTypes.func.isRequired,
+  squares: PropTypes.arrayOf(
+    PropTypes.arrayOf(
+      PropTypes.shape({
+        mine: PropTypes.bool,
+        flagged: PropTypes.bool,
+        uncovered: PropTypes.bool,
+        content: PropTypes.string.isRequired
+      })
+    ).isRequired
+  ).isRequired
+};
+
 const mapStateToProps = state => {
   const setup = getSetup(state);
-  const { currentPlayer, board, status, minesLeft, duration } = getBoard(state);
-  return {
-    setup,
-    board,
-    status,
-    duration,
-    minesLeft,
-    currentPlayer
-  };
+  const board = getBoard(state);
+  return { setup, ...board };
 };
 
 export default connect(

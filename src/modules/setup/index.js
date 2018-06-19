@@ -1,3 +1,4 @@
+import { pick, mapValues } from 'lodash';
 import { EASY, MEDIUM, HARD } from './difficulties';
 import {
   LOAD_SETUP,
@@ -38,7 +39,10 @@ export const setupKey = 'setup';
 export const getSetup = state => {
   const setup = state[setupKey];
   const difficulty = propsToDifficulty(setup);
-  return difficulty ? { ...setup, difficulty: difficulty } : setup;
+  return {
+    ...mapValues(pick(setup, ['mines', 'height', 'width', 'players']), String),
+    difficulty
+  };
 };
 
 const setupReducer = (state = initialState, action) => {
