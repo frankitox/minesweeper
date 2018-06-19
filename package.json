@@ -10,6 +10,7 @@
     "lodash": "^4.17.10",
     "lodash.product": "^18.1.16",
     "moment": "^2.22.2",
+    "node-sass-chokidar": "^1.3.0",
     "prettier": "^1.13.5",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
@@ -27,6 +28,8 @@
     ]
   },
   "scripts": {
+    "build-css": "node-sass-chokidar src/ -o src/",
+    "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
     "precommit": "lint-staged",
     "start": "react-scripts start",
     "build": "react-scripts build",
