@@ -3,6 +3,7 @@ import 'lodash.product';
 import {
   LOAD_BOARD,
   START_GAME,
+  UNFLAG_SQUARE,
   FLAG_SQUARE,
   TAP_SQUARE,
   TICK
@@ -25,9 +26,14 @@ export const startGame = ({ mines, width, height }) => ({
   }
 });
 
-export const flagSquare = ({ players, coords }) => ({
+export const flagSquare = ({ coords }) => ({
   type: FLAG_SQUARE,
-  payload: { players, coords }
+  payload: { coords }
+});
+
+export const unflagSquare = ({ coords }) => ({
+  type: UNFLAG_SQUARE,
+  payload: { coords }
 });
 
 export const tapSquare = ({ coords, players, difficulty, width, height }) => ({

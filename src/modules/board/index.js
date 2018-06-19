@@ -16,6 +16,7 @@ import {
   LOAD_BOARD,
   START_GAME,
   FLAG_SQUARE,
+  UNFLAG_SQUARE,
   TAP_SQUARE,
   TICK
 } from './actionTypes';
@@ -84,16 +85,22 @@ const minesAround = ({ mines }, { width, height }, row, col) =>
     0
   );
 
-const clearZeroes = ({ width, height, mines, uncovered }, toUncover) => {
+const clearZeroes = ({ width, height, mines, uncovered, flags }, toUncover) => {
   if (isEmpty(toUncover)) {
     return uncovered;
   }
   const [firstToUncover, ...nextToUncover] = toUncover;
   const [row, col] = firstToUncover;
   const newUncovered = { ...uncovered, [toObjKey(row, col)]: true };
+  if (getObjValue(flags, row, col)) {
+    return clearZeroes(
+      { width, height, mines, uncovered, flags },
+      nextToUncover
+    );
+  }
   if (0 !== minesAround({ mines }, { width, height }, row, col)) {
     return clearZeroes(
-      { width, height, mines, uncovered: newUncovered },
+      { width, height, mines, uncovered: newUncovered, flags },
       nextToUncover
     );
   }
@@ -102,7 +109,8 @@ const clearZeroes = ({ width, height, mines, uncovered }, toUncover) => {
       width,
       height,
       mines,
-      uncovered: newUncovered
+      uncovered: newUncovered,
+      flags
     },
     concat(
       filter(
@@ -172,12 +180,14 @@ const boardReducer = (state = initialState, action) => {
         ? state
         : {
             ...state,
-            flags: { ...state.flags, [toObjKey(row, col)]: true },
-            currentPlayer: nextPlayer(
-              state.currentPlayer,
-              action.payload.players
-            )
+            flags: { ...state.flags, [toObjKey(row, col)]: true }
           };
+    case UNFLAG_SQUARE:
+      [row, col] = action.payload.coords;
+      square = getSquare(state, row, col);
+      return !square.flagged || square.uncover
+        ? state
+        : { ...state, flags: { ...state.flags, [toObjKey(row, col)]: false } };
     case TAP_SQUARE:
       [row, col] = action.payload.coords;
       square = getSquare(state, row, col);
@@ -194,7 +204,8 @@ const boardReducer = (state = initialState, action) => {
               width: action.payload.width,
               height: action.payload.height,
               uncovered: state.uncovered,
-              mines: state.mines
+              mines: state.mines,
+              flags: state.flags
             },
             [[row, col]]
           );

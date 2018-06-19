@@ -10,9 +10,6 @@ import { getBoard } from './../modules/board';
 import * as boardActions from './../modules/board/actions';
 import { LOST, PLAYING, WON } from './../modules/board/statuses';
 
-// TODO: https://stackoverflow.com/questions/28648292/right-click-menu-using-react-js
-// right click hide menu
-
 class Play extends React.Component {
   constructor(props) {
     super(props);
@@ -26,6 +23,7 @@ class Play extends React.Component {
       setup,
       squares,
       flagSquare,
+      unflagSquare,
       tick,
       currentPlayer,
       tapSquare,
@@ -62,10 +60,10 @@ class Play extends React.Component {
                     });
                   }
                 }}
-                onContextMenu={() => {
+                onContextMenu={e => {
+                  e.preventDefault();
                   if (status === PLAYING) {
-                    flagSquare({
-                      players: setup.players,
+                    (square.flagged ? unflagSquare : flagSquare)({
                       coords: [rowI, squareI]
                     });
                   }
