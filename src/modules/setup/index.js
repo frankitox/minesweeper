@@ -21,9 +21,9 @@ const initialState = {
 
 const propsToDifficulty = props => {
   const compare = presetProps =>
-    presetProps.height === props.height &&
-    presetProps.width === props.width &&
-    presetProps.mines === props.mines;
+    presetProps.height === Number(props.height) &&
+    presetProps.width === Number(props.width) &&
+    presetProps.mines === Number(props.mines);
   return compare(mapDifficultyToProps[EASY])
     ? EASY
     : compare(mapDifficultyToProps[MEDIUM])

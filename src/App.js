@@ -11,7 +11,7 @@ import Setup from './Setup';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    const { loadSetup, loadBoard, startGame, setup } = props;
+    const { loadSetup, loadBoard } = props;
     const { setup: storedSetup, board: storedBoard } =
       JSON.parse(localStorage.getItem('minesweeper')) || {};
     if (storedSetup) {

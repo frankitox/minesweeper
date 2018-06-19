@@ -11,8 +11,9 @@ import { PLAYING } from './../modules/board/statuses';
 // right click hide menu
 
 class Play extends React.Component {
-  componentDidMount() {
-    const { startGame, setup } = this.props;
+  constructor(props) {
+    super(props);
+    const { startGame, setup } = props;
     startGame(setup);
   }
 
