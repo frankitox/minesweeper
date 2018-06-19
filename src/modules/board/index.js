@@ -58,7 +58,7 @@ export const getHistory = state => ({
       difficulty: item.difficulty.toLowerCase(),
       difficultyIndex: difficultyWeight(item.difficulty),
       totalTimeSpent: `${item.duration / 1000} seconds`,
-      status: `Player ${item.lastPlayer} ${item.status}`,
+      status: `Player ${item.lastPlayer + 1} ${item.status}`,
       duration: item.duration
     })),
     ['difficultyIndex', 'duration'],
@@ -176,51 +176,57 @@ const boardReducer = (state = initialState, action) => {
             )
           };
     case TAP_SQUARE:
-      // if flagged || uncover
-      //   nothing
-      // else
-      //   if mine
-      //     player lost
-      //     uncover current square
-      //     push history
-      //   else
       [row, col] = action.payload.coords;
       square = getSquare(state, row, col);
       if (square.flagged || square.uncover) {
         return state;
       }
+      const newUncovered = square.mine
+        ? {
+            ...state.uncovered,
+            [toObjKey(row, col)]: true
+          }
+        : clearZeroes(
+            {
+              width: action.payload.width,
+              height: action.payload.height,
+              uncovered: state.uncovered,
+              mines: state.mines
+            },
+            [[row, col]]
+          );
+      const gameStatus = getGameStatus(
+        { mines: state.mines, uncovered: newUncovered },
+        { width: action.payload.width, height: action.payload.height }
+      );
+      const newHistory =
+        gameStatus === PLAYING
+          ? state.history
+          : [
+              ...state.history,
+              {
+                startedAt: state.startedAt,
+                duration: state.duration,
+                endAt: action.payload.maybeEndAt,
+                difficulty: action.payload.difficulty,
+                lastPlayer: state.currentPlayer,
+                status: gameStatus
+              }
+            ];
       if (square.mine) {
         return {
           ...state,
-          history: [
-            ...state.history,
-            {
-              startedAt: state.startedAt,
-              duration: state.duration,
-              endAt: action.payload.maybeEndAt,
-              difficulty: action.payload.difficulty,
-              lastPlayer: state.currentPlayer,
-              status: LOST
-            }
-          ],
+          history: newHistory,
           uncovered: {
             ...state.uncovered,
             [toObjKey(row, col)]: true
           }
         };
       }
-      const newUncovered = clearZeroes(
-        {
-          width: action.payload.width,
-          height: action.payload.height,
-          uncovered: state.uncovered,
-          mines: state.mines
-        },
-        [[row, col]]
-      );
       return {
         ...state,
         uncovered: newUncovered,
+        history: newHistory,
         currentPlayer:
           getGameStatus(
             { mines: state.mines, uncovered: newUncovered },
