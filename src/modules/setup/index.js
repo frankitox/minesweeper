@@ -1,5 +1,6 @@
 import { EASY, MEDIUM, HARD } from './difficulties';
 import {
+  LOAD_SETUP,
   SET_PLAYERS,
   SET_MINES,
   SET_HEIGHT,
@@ -42,6 +43,8 @@ export const getSetup = state => {
 
 const setupReducer = (state = initialState, action) => {
   switch (action.type) {
+    case LOAD_SETUP:
+      return action.payload;
     case SET_PLAYERS:
       return { ...state, players: action.payload };
     case SET_MINES:

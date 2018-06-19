@@ -1,6 +1,17 @@
 import _, { range, shuffle, take, reduce } from 'lodash';
 import 'lodash.product';
-import { START_GAME, FLAG_SQUARE, TAP_SQUARE, TICK } from './actionTypes';
+import {
+  LOAD_BOARD,
+  START_GAME,
+  FLAG_SQUARE,
+  TAP_SQUARE,
+  TICK
+} from './actionTypes';
+
+export const loadBoard = board => ({
+  type: LOAD_BOARD,
+  payload: board
+});
 
 export const startGame = ({ mines, width, height }) => ({
   type: START_GAME,

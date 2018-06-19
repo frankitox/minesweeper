@@ -12,7 +12,13 @@ import _, {
   reduce
 } from 'lodash';
 import 'lodash.product';
-import { START_GAME, FLAG_SQUARE, TAP_SQUARE, TICK } from './actionTypes';
+import {
+  LOAD_BOARD,
+  START_GAME,
+  FLAG_SQUARE,
+  TAP_SQUARE,
+  TICK
+} from './actionTypes';
 import { getSetup } from './../setup';
 import { difficultyWeight } from './../setup/difficulties';
 import { WON, LOST, PLAYING } from './statuses';
@@ -145,6 +151,8 @@ const getGameStatus = ({ mines, uncovered }, { width, height }) => {
 const boardReducer = (state = initialState, action) => {
   let row, col, square;
   switch (action.type) {
+    case LOAD_BOARD:
+      return action.payload;
     case START_GAME:
       return {
         ...initialState,

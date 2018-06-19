@@ -4,11 +4,21 @@ import createHistory from 'history/createBrowserHistory';
 import rootReducer from './modules';
 // import { composeWithDevTools } from 'redux-devtools-extension';
 
+const storeStateMiddleware = storageKey => store => next => action => {
+  const result = next(action);
+  const { board, setup } = store.getState();
+  localStorage.setItem(storageKey, JSON.stringify({ board, setup }, null, 2)); // 2 to pprint
+  return result;
+};
+
 export const history = createHistory();
 
 const initialState = {};
 const enhancers = [];
-const middleware = [routerMiddleware(history)];
+const middleware = [
+  routerMiddleware(history),
+  storeStateMiddleware('minesweeper')
+];
 
 if (process.env.NODE_ENV === 'development') {
   const devToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION__;

@@ -1,10 +1,16 @@
 import {
+  LOAD_SETUP,
   SET_PLAYERS,
   SET_MINES,
   SET_HEIGHT,
   SET_WIDTH,
   SET_DIFFICULTY
 } from './actionTypes';
+
+export const loadSetup = setup => ({
+  type: LOAD_SETUP,
+  payload: setup
+});
 
 export const setPlayers = players => ({
   type: SET_PLAYERS,
