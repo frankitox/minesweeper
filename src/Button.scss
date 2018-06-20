@@ -1,3 +1,14 @@
 .button {
   display: inline-block;
+  background-color: #2ECC71;
+  color: white;
+  padding: 10px 15px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 22px;
+  box-shadow: 0px 5px 0px 0px #15B358;
+  margin: 0 10px;
+  &:hover {
+    background-color: #48E68B;
+  }
 }

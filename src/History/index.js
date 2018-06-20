@@ -3,11 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { map } from 'lodash';
 import Button from './../Button';
+import PageTitle from './../PageTitle';
 import { getHistory } from './../modules/board';
+import './History.css';
 
 const History = ({ gamesPlayed }) => (
-  <div>
-    <table>
+  <div className="History">
+    <PageTitle>History</PageTitle>
+    <table className="History__table">
       <thead>
         <tr>
           <th>Start time</th>
@@ -19,7 +22,7 @@ const History = ({ gamesPlayed }) => (
       </thead>
       <tbody>
         {map(gamesPlayed, (game, gameIndex) => (
-          <tr key={gameIndex}>
+          <tr className="History__row" key={gameIndex}>
             <td>{game.startedAt}</td>
             <td>{game.endAt}</td>
             <td>{game.difficulty}</td>
@@ -29,8 +32,11 @@ const History = ({ gamesPlayed }) => (
         ))}
       </tbody>
     </table>
-    <Button to="/">Back</Button>
-    <Button to="/play">Play</Button>
+
+    <div className="History__navigation">
+      <Button to="/">Back</Button>
+      <Button to="/play">Play</Button>
+    </div>
   </div>
 );
 

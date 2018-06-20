@@ -1,0 +1,21 @@
+.Play {
+  &__board {
+    text-align: center;
+  }
+  &__square {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    vertical-align: middle;
+    text-align: center;
+    margin-right: 2px;
+    cursor: pointer;
+  }
+  &__board-row {
+    margin-top: 2px;
+  }
+  &__footer {
+    text-align: center;
+  }
+}

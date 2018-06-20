@@ -1,0 +1,20 @@
+.flat-input {
+  border: 2px solid #bdc3c7;
+  color: #34495e;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.467;
+  padding: 8px 12px;
+  border-radius: 6px;
+  box-shadow: none;
+  outline: none;
+  transition: border 0.25s linear, color 0.25s linear,
+    background-color 0.25s linear;
+  &:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #2ECC71;
+    outline: 0;
+    box-shadow: none;
+  }
+}

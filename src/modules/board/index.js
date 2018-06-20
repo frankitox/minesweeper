@@ -8,6 +8,7 @@ import _, {
   size,
   flatMap,
   concat,
+  omit,
   filter,
   reduce
 } from 'lodash';
@@ -122,6 +123,8 @@ const clearZeroes = ({ width, height, mines, uncovered, flags }, toUncover) => {
   );
 };
 
+const getMinesLeft = ({ mines, flags }) => size(mines) - size(flags);
+
 export const getBoard = state => {
   const { width, height } = getSetup(state);
   const boardState = state[boardKey];
@@ -135,7 +138,7 @@ export const getBoard = state => {
         mine,
         flagged,
         uncovered: uncover,
-        content: uncover ? (mine ? '*' : nMines) : flagged ? 'f' : '■'
+        content: uncover ? (mine ? '*' : nMines) : flagged ? 'F' : ''
       };
     })
   );
@@ -145,7 +148,7 @@ export const getBoard = state => {
     squares,
     duration,
     status: getGameStatus(boardState, { width, height }),
-    minesLeft: String(size(mines) - size(flags))
+    minesLeft: String(getMinesLeft({ mines, flags }))
   };
 };
 
@@ -153,7 +156,7 @@ const getGameStatus = ({ mines, uncovered }, { width, height }) => {
   if (!isEmpty(intersection(keys(mines), keys(uncovered)))) {
     return LOST;
   }
-  if (size(keys(mines)) + size(keys(uncovered)) === width * height) {
+  if (size(mines) + size(uncovered) === width * height) {
     return WON;
   }
   return PLAYING;
@@ -176,7 +179,9 @@ const boardReducer = (state = initialState, action) => {
     case FLAG_SQUARE:
       [row, col] = action.payload.coords;
       square = getSquare(state, row, col);
-      return square.flagged || square.uncover
+      const noMinesLeft =
+        getMinesLeft({ mines: state.mines, flags: state.flags }) === 0;
+      return square.flagged || square.uncover || noMinesLeft
         ? state
         : {
             ...state,
@@ -187,7 +192,7 @@ const boardReducer = (state = initialState, action) => {
       square = getSquare(state, row, col);
       return !square.flagged || square.uncover
         ? state
-        : { ...state, flags: { ...state.flags, [toObjKey(row, col)]: false } };
+        : { ...state, flags: omit(state.flags, toObjKey(row, col)) };
     case TAP_SQUARE:
       [row, col] = action.payload.coords;
       square = getSquare(state, row, col);

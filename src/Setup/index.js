@@ -2,9 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Button from './../Button';
+import PageTitle from './../PageTitle';
+import FlatInputText from './../FlatInputText';
 import { getSetup } from './../modules/setup';
 import { EASY, MEDIUM, HARD } from './../modules/setup/difficulties';
 import * as setupActions from './../modules/setup/actions';
+import './Setup.css';
 
 const Setup = ({
   mines,
@@ -18,63 +21,96 @@ const Setup = ({
   setPlayers,
   setDifficulty
 }) => (
-  <div>
-    <input type="text" value={mines} onChange={e => setMines(e.target.value)} />{' '}
-    Mines
-    <br />
-    <input
-      type="text"
-      value={height}
-      onChange={e => setHeight(e.target.value)}
-    />{' '}
-    Height
-    <br />
-    <input
-      type="text"
-      value={width}
-      onChange={e => setWidth(e.target.value)}
-    />{' '}
-    Width
-    <br />
-    <input
-      type="text"
-      value={players}
-      onChange={e => setPlayers(e.value)}
-    />{' '}
-    Players
-    <br />
-    <input
-      type="checkbox"
-      id="difficulty-easy"
-      name="difficulty"
-      value="EASY"
-      checked={difficulty === EASY}
-      readOnly
-      onClick={e => setDifficulty(EASY)}
-    />
-    <label htmlFor="difficulty-easy">Easy</label> <br />
-    <input
-      type="checkbox"
-      id="difficulty-medium"
-      name="difficulty"
-      value="MEDIUM"
-      checked={difficulty === MEDIUM}
-      readOnly
-      onClick={e => setDifficulty(MEDIUM)}
-    />
-    <label htmlFor="difficulty-medium">Medium</label> <br />
-    <input
-      type="checkbox"
-      id="difficulty-hard"
-      name="difficulty"
-      value="HARD"
-      checked={difficulty === HARD}
-      readOnly
-      onClick={e => setDifficulty(HARD)}
-    />
-    <label htmlFor="difficulty-hard">Hard</label> <br />
-    <Button to="/">Back</Button> <br />
-    <Button to="/play">Play</Button>
+  <div className="Setup">
+    <PageTitle>Setup</PageTitle>
+    <div className="Setup__form">
+      <div className="Setup__form-item">
+        <label className="Setup__form-label" htmlFor="mines">
+          Mines:{' '}
+        </label>
+        <FlatInputText
+          type="text"
+          id="mines"
+          value={mines}
+          onChange={e => setMines(e.target.value)}
+        />{' '}
+      </div>
+      <div className="Setup__form-item">
+        <label className="Setup__form-label" htmlFor="height">
+          Height:{' '}
+        </label>
+        <FlatInputText
+          type="text"
+          id="height"
+          value={height}
+          onChange={e => setHeight(e.target.value)}
+        />{' '}
+      </div>
+      <div className="Setup__form-item">
+        <label className="Setup__form-label" htmlFor="width">
+          Width:{' '}
+        </label>
+        <FlatInputText
+          type="text"
+          id="width"
+          value={width}
+          onChange={e => setWidth(e.target.value)}
+        />{' '}
+      </div>
+      <div className="Setup__form-item">
+        <label className="Setup__form-label" htmlFor="players">
+          Players:{' '}
+        </label>
+        <FlatInputText
+          type="text"
+          id="players"
+          value={players}
+          onChange={e => setPlayers(e.value)}
+        />{' '}
+      </div>
+      <div className="Setup__form-item">
+        <span className="Setup__form-checkbox">
+          <input
+            type="checkbox"
+            id="difficulty-easy"
+            name="difficulty"
+            value="EASY"
+            checked={difficulty === EASY}
+            readOnly
+            onClick={e => setDifficulty(EASY)}
+          />
+          <label htmlFor="difficulty-easy">Easy</label>
+        </span>
+        <span className="Setup__form-checkbox">
+          <input
+            type="checkbox"
+            id="difficulty-medium"
+            name="difficulty"
+            value="MEDIUM"
+            checked={difficulty === MEDIUM}
+            readOnly
+            onClick={e => setDifficulty(MEDIUM)}
+          />
+          <label htmlFor="difficulty-medium">Medium</label>
+        </span>
+        <span className="Setup__form-checkbox">
+          <input
+            type="checkbox"
+            id="difficulty-hard"
+            name="difficulty"
+            value="HARD"
+            checked={difficulty === HARD}
+            readOnly
+            onClick={e => setDifficulty(HARD)}
+          />
+          <label htmlFor="difficulty-hard">Hard</label>
+        </span>
+      </div>
+    </div>
+    <div className="Setup__navigation">
+      <Button to="/">Back</Button>
+      <Button to="/play">Play</Button>
+    </div>
   </div>
 );
 

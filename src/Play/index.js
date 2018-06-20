@@ -5,10 +5,12 @@ import { pick } from 'lodash';
 import { inputProps } from './../Setup';
 import Counter from './../Counter';
 import Button from './../Button';
+import PageTitle from './../PageTitle';
 import { getSetup } from './../modules/setup';
 import { getBoard } from './../modules/board';
 import * as boardActions from './../modules/board/actions';
 import { LOST, PLAYING, WON } from './../modules/board/statuses';
+import './Play.css';
 
 class Play extends React.Component {
   constructor(props) {
@@ -32,51 +34,66 @@ class Play extends React.Component {
       minesLeft
     } = this.props;
     return (
-      <div>
-        <h1>
-          Player {currentPlayer} {status}
-        </h1>
-        {status === PLAYING ? (
-          <Counter time={duration} everySecond={tick} />
-        ) : (
-          duration
-        )}
-        <Button to="/">Back</Button>
-        <h1>{minesLeft} mines</h1>
-        {squares.map((row, rowI) => (
-          <div key={rowI}>
-            {row.map((square, squareI) => (
-              <span
-                style={{ width: 10, display: 'inline-block' }}
-                key={squareI}
-                onClick={() => {
-                  if (status === PLAYING) {
-                    tapSquare({
-                      players: setup.players,
-                      coords: [rowI, squareI],
-                      difficulty: setup.difficulty,
-                      height: setup.height,
-                      width: setup.width
-                    });
-                  }
-                }}
-                onContextMenu={e => {
-                  e.preventDefault();
-                  if (status === PLAYING) {
-                    (square.flagged ? unflagSquare : flagSquare)({
-                      coords: [rowI, squareI]
-                    });
-                  }
-                }}
-              >
-                {square.content}
-              </span>
-            ))}
-          </div>
-        ))}
-        {setup.difficulty && (
-          <p>Difficulty: {setup.difficulty.toLowerCase()}</p>
-        )}
+      <div className="Play">
+        <div className="Play__header">
+          <PageTitle>
+            Player {currentPlayer} {status}
+          </PageTitle>
+        </div>
+        <div className="Play__board">
+          {squares.map((row, rowI) => (
+            <div key={rowI} className="Play__board-row">
+              {row.map((square, squareI) => (
+                <span
+                  className="Play__square"
+                  key={squareI}
+                  style={{
+                    backgroundColor: square.uncovered
+                      ? square.mine
+                        ? '#FB667A'
+                        : '#323c50'
+                      : '#185875'
+                  }}
+                  onClick={() => {
+                    if (status === PLAYING) {
+                      tapSquare({
+                        players: setup.players,
+                        coords: [rowI, squareI],
+                        difficulty: setup.difficulty,
+                        height: setup.height,
+                        width: setup.width
+                      });
+                    }
+                  }}
+                  onContextMenu={e => {
+                    e.preventDefault();
+                    if (status === PLAYING) {
+                      (square.flagged ? unflagSquare : flagSquare)({
+                        coords: [rowI, squareI]
+                      });
+                    }
+                  }}
+                >
+                  {square.content}
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
+        <div className="Play__footer">
+          <p>
+            {status === PLAYING ? (
+              <Counter time={duration / 1000} everySecond={tick} />
+            ) : (
+              duration / 1000
+            )}
+          </p>
+          <p>{minesLeft} mines left</p>
+          {setup.difficulty && (
+            <p>Difficulty: {setup.difficulty.toLowerCase()}</p>
+          )}
+          <Button to="/">Back</Button>
+        </div>
       </div>
     );
   }
