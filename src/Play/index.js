@@ -26,7 +26,7 @@ class Play extends React.Component {
       squares,
       flagSquare,
       unflagSquare,
-      tick,
+      setDuration,
       currentPlayer,
       tapSquare,
       status,
@@ -83,9 +83,9 @@ class Play extends React.Component {
         <div className="Play__footer">
           <p>
             {status === PLAYING ? (
-              <Counter time={duration / 1000} everySecond={tick} />
+              <Counter onUnmount={setDuration} />
             ) : (
-              duration / 1000
+              duration
             )}
           </p>
           <p>{minesLeft} mines left</p>
@@ -105,12 +105,12 @@ Play.propTypes = {
   ).isRequired,
   status: PropTypes.oneOf([LOST, PLAYING, WON]).isRequired,
   currentPlayer: PropTypes.string.isRequired,
-  duration: PropTypes.number.isRequired,
+  duration: PropTypes.number,
   minesLeft: PropTypes.string.isRequired,
   startGame: PropTypes.func.isRequired,
   flagSquare: PropTypes.func.isRequired,
   tapSquare: PropTypes.func.isRequired,
-  tick: PropTypes.func.isRequired,
+  setDuration: PropTypes.func.isRequired,
   squares: PropTypes.arrayOf(
     PropTypes.arrayOf(
       PropTypes.shape({

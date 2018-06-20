@@ -6,7 +6,7 @@ import {
   UNFLAG_SQUARE,
   FLAG_SQUARE,
   TAP_SQUARE,
-  TICK
+  SET_DURATION
 } from './actionTypes';
 
 export const loadBoard = board => ({
@@ -48,7 +48,7 @@ export const tapSquare = ({ coords, players, difficulty, width, height }) => ({
   }
 });
 
-export const tick = ({ milis }) => ({
-  type: TICK,
-  payload: { milis }
+export const setDuration = ({ millis }) => ({
+  type: SET_DURATION,
+  payload: { millis }
 });

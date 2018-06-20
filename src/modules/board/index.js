@@ -19,7 +19,7 @@ import {
   FLAG_SQUARE,
   UNFLAG_SQUARE,
   TAP_SQUARE,
-  TICK
+  SET_DURATION
 } from './actionTypes';
 import { getSetup } from './../setup';
 import { difficultyWeight } from './../setup/difficulties';
@@ -146,7 +146,7 @@ export const getBoard = state => {
   return {
     currentPlayer: String(currentPlayer + 1),
     squares,
-    duration,
+    duration: Math.floor(duration / 1000),
     status: getGameStatus(boardState, { width, height }),
     minesLeft: String(getMinesLeft({ mines, flags }))
   };
@@ -255,10 +255,10 @@ const boardReducer = (state = initialState, action) => {
             : nextPlayer(state.currentPlayer, action.payload.players)
       };
 
-    case TICK:
+    case SET_DURATION:
       return {
         ...state,
-        duration: state.duration + action.payload.milis
+        duration: action.payload.millis
       };
     default:
       return state;
