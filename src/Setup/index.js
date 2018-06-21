@@ -65,7 +65,7 @@ const Setup = ({
           type="text"
           id="players"
           value={players}
-          onChange={e => setPlayers(e.value)}
+          onChange={e => setPlayers(e.target.value)}
         />{' '}
       </div>
       <div className="Setup__form-item">
