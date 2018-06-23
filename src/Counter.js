@@ -19,9 +19,6 @@ class Counter extends React.Component {
     const { onUnmount } = this.props;
     clearInterval(this.timerId);
     const { from } = this.state;
-    console.log('WTF');
-    console.log(this.state);
-    console.log(new Date().getTime() - from);
     onUnmount({ millis: new Date().getTime() - from });
   }
 
