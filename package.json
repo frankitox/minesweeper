@@ -2,6 +2,7 @@
   "name": "minesweeper",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://frankitox.github.io/minesweeper",
   "dependencies": {
     "connected-react-router": "^4.3.0",
     "history": "^4.7.2",
@@ -31,13 +32,16 @@
     "build-css": "node-sass-chokidar src/ -o src/",
     "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
     "precommit": "lint-staged && npm run ci-test",
-    "start": "react-scripts start",
+    "start": "npm run build-css && react-scripts start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "ci-test": "npm test -- --coverage",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
+    "gh-pages": "^1.2.0",
     "npm-run-all": "^4.1.3"
   }
 }

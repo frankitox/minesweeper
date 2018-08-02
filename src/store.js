@@ -11,7 +11,11 @@ const storeStateMiddleware = storageKey => store => next => action => {
   return result;
 };
 
-export const history = createHistory();
+const inDev = process.env.NODE_ENV === 'development';
+
+export const history = createHistory(
+  inDev ? {} : { basename: '/minesweeper/' }
+);
 
 const initialState = {};
 const enhancers = [];
@@ -20,7 +24,7 @@ const middleware = [
   storeStateMiddleware('minesweeper')
 ];
 
-if (process.env.NODE_ENV === 'development') {
+if (inDev) {
   const devToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION__;
 
   if (typeof devToolsExtension === 'function') {
